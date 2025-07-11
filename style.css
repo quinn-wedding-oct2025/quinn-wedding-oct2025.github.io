@@ -289,6 +289,7 @@ body {
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
   }
   
   /* ---------------------------- */
@@ -376,7 +377,7 @@ body {
       }
       
       .location-text h2 {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
         font-weight: bold;
         margin-bottom: 1rem;
       }
@@ -386,7 +387,7 @@ body {
       }
       
       .location-text p {
-        font-size: 1.2rem;
+        font-size: .9rem;
         margin-bottom: 2rem;
       }
       
@@ -406,11 +407,11 @@ body {
       }
       
       .location-photo {
-        flex: 1 1 40%;
+        flex: 1 1 45%;
       }
       
       .location-photo img {
-        max-width: 100%;
+        max-width: 120%;
         border-radius: 15px;
       }
     }
