@@ -335,8 +335,8 @@ body {
     max-width: 100%;
       text-align: center;
     }
-    .image-section {
-      max-width: 40000px;
+    .image-section img{
+      max-width: 100%;
       text-align: center;
     }
   
