@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quinn 2025 Wedding</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Brecken & Johnathan</a>
+  
+      <div class="menu-toggle" id="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+  
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="details.html">Details</a></li>
+        <li><a href="https://duke.qualtrics.com/jfe/form/SV_1TUlJREQml8gJNk">RSVP</a></li>
+        <li><a href="https://www.amazon.com/wedding/registry/YRT7P6FN5E8E">Registry</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Link Shortener</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Georgia', serif;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        max-width: 600px;
+    }
+    .link-card {
+        display: flex;
+        align-items: center;
+        margin: 30px 0 10px 0;
+        text-decoration: none;
+        color: black;
+        width: 100%;
+    }
+    .link-card img {
+        width: 70px;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+    .link-text h2 {
+        font-size: 1.8rem;
+        margin: 0;
+    }
+    .link-text p {
+        font-size: 1rem;
+        margin: 5px 0 0;
+        font-style: italic;
+    }
+    .link-card:hover {
+        opacity: 0.7;
+    }
+    /* Sub-link under main card */
+    .sub-link {
+        display: block;
+        margin-left: 90px; /* indent under main icon/text */
+        margin-top: 5px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-style: italic;
+        color: #333;
+    }
+    .sub-link:hover {
+        text-decoration: underline;
+    }
+    .sub-link img {
+    width: 20px;     /* adjust to whatever size looks good */
+    height: auto;
+    vertical-align: middle; /* aligns nicely with text */
+    margin-right: 5px;
+}
+
+    /* Mobile responsive layout */
+    @media (max-width: 500px) {
+        .link-card {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .link-card img {
+            margin: 0 0 10px;
+            width: 60px;
+        }
+        .sub-link {
+            margin: 5px 0 0;
+            text-align: center;
+            margin-left: 0;
+        }
+        .link-text h2 {
+            font-size: 1.4rem;
+        }
+        .link-text p {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Main upload link -->
+<a href="https://your-link-shortener.com/upload" class="link-card">
+    <img src="images/camera.png" alt="Camera">
+    <div class="link-text">
+        <h2>Upload wedding photos</h2>
+        <p>Click here to upload photos you’ve taken during the wedding!</p>
+    </div>
+</a>
+<!-- Sub-link for instructions -->
+<a href="https://docs.google.com/document/d/your-doc-id" class="sub-link" target="_blank">
+    <img src ="images/questionmark.png" alt = "question mark">
+    How to upload pictures
+</a>
+
+<!-- Gift registry link -->
+<a href="https://your-link-shortener.com/registry" class="link-card">
+    <img src="images/gift.png" alt="Gift">
+    <div class="link-text">
+        <h2>Gift registry</h2>
+        <p>Click here to visit our gift registry!</p>
+    </div>
+</a>
+
+<!-- Word search link -->
+<a href="https://your-link-shortener.com/wordsearch" class="link-card">
+    <img src="images/puzzel.png" alt="Puzzle">
+    <div class="link-text">
+        <h2>Word search answers</h2>
+        <p>Click here to see all the words in the word search from your program!</p>
+    </div>
+</a>
+
+</div>
+
+</body>
+</html>
