@@ -46,6 +46,14 @@
         width: 90%;
         max-width: 600px;
     }
+    .section {
+        width: 100%;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.1); /* faint line */
+    }
+    .section:last-child {
+        border-bottom: none; /* no line after last section */
+    }
     .link-card {
         display: flex;
         align-items: center;
@@ -121,6 +129,7 @@
 <div class="container">
 
 <!-- Main upload link -->
+ <div class="section">
 <a href="https://your-link-shortener.com/upload" class="link-card">
     <img src="images/camera.png" alt="Camera">
     <div class="link-text">
@@ -133,8 +142,10 @@
     <img src ="images/questionmark.png" alt = "question mark">
     How to upload pictures
 </a>
+</div>
 
 <!-- Gift registry link -->
+ <div class="section">
 <a href="https://your-link-shortener.com/registry" class="link-card">
     <img src="images/gift.png" alt="Gift">
     <div class="link-text">
@@ -142,8 +153,10 @@
         <p>Click here to visit our gift registry!</p>
     </div>
 </a>
+</div>
 
 <!-- Word search link -->
+ <div class="section">
 <a href="https://your-link-shortener.com/wordsearch" class="link-card">
     <img src="images/puzzel.png" alt="Puzzle">
     <div class="link-text">
@@ -151,6 +164,17 @@
         <p>Click here to see all the words in the word search from your program!</p>
     </div>
 </a>
+</div>
+
+<div class="section">
+<a href="https://your-link-shortener.com/wordsearch" class="link-card">
+    <img src="images/heartballoon.png" alt="Puzzle">
+    <div class="link-text">
+        <h2>Online Program & Schedule</h2>
+        <p>Click here to see the digital program!</p>
+    </div>
+</a>
+</div>
 
 </div>
 
