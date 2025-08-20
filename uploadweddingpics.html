@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wedding Photo Upload</title>
+</head>
+<body>
+  <h2>Upload your wedding photos!</h2>
+  <input type="file" id="fileInput" accept="image/*" multiple>
+  <button onclick="uploadFiles()">Upload</button>
+  <p id="status"></p>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxqAbBsdeVWqmhmuJyq4M2Qlsh3Ou8o5JepkDcwHLAQzcNNB41Bm15S2LRkrhO6xNE/exec"; // from Apps Script
+
+    async function uploadFiles() {
+      const files = document.getElementById("fileInput").files;
+      if (!files.length) {
+        document.getElementById("status").innerText = "Please select files first.";
+        return;
+      }
+
+      for (let file of files) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const base64 = e.target.result.split(',')[1];
+          const body = new URLSearchParams();
+          body.append("file", base64);
+          body.append("filename", file.name);
+          body.append("mimeType", file.type);
+
+          const response = await fetch(scriptURL, { method: "POST", body });
+          const text = await response.text();
+          document.getElementById("status").innerText = text;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html>
