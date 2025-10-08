@@ -11,7 +11,9 @@
     :root{
       --ivory:#FFFBF6; --paper:#FFFFFF; --charcoal:#2B2B2B; --muted:#6F6F6F;
       --blush:#F2C9E1; --blush-strong:#E7B3D3; --sage:#6E8F7B; --border:#f2f2f2;
-      --shadow:0 10px 30px rgba(0,0,0,.08); --radius-xl:22px; --radius-md:12px;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius-xl:22px; --radius-md:12px;
+      --ok:#2f8f5b; --warn:#a15c00; --err:#b33a3a;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -29,15 +31,15 @@
            color:var(--charcoal);font-size:1.1rem;}
 
     /* Layout */
-    .wrap{max-width:720px;margin:2.5rem auto 5rem;padding:0 1rem;}
-    header{text-align:center;margin-bottom:1.5rem;}
+    .wrap{max-width:820px;margin:2.2rem auto 4rem;padding:0 1rem;}
+    header{text-align:center;margin-bottom:1.25rem;}
     .eyebrow{color:var(--sage);text-transform:uppercase;font-size:.85rem;font-weight:600;letter-spacing:.1em;}
     h1{font-family:"Playfair Display",serif;font-size:2.2rem;margin:.4rem 0;}
     .sub{color:var(--muted);font-size:1rem;}
 
     .card{background:var(--paper);border:1px solid var(--border);
           border-radius:var(--radius-xl);box-shadow:var(--shadow);
-          padding:1.5rem;}
+          padding:1.25rem;}
 
     /* Picker */
     .pick{display:block;width:100%;margin-bottom:.75rem;
@@ -47,39 +49,50 @@
           color:#2b2230;box-shadow:0 8px 20px rgba(242,201,225,.45);}
     .pick:active{transform:translateY(1px);}
     #fileInput{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
-    .limit-note{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:1rem;}
+    .limit-note{text-align:center;color:var(--muted);font-size:.9rem;margin:.6rem 0 1rem;}
 
-    /* Thumbnails */
+    /* Thumbnails of current selection (before enqueue) */
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
           gap:10px;margin-bottom:1rem;}
     .thumb{border-radius:var(--radius-md);overflow:hidden;border:1px solid #eee;}
     .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 
-    /* Buttons */
+    /* Actions */
     .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
     .btn{flex:1 1 auto;min-width:120px;border:none;border-radius:999px;padding:.9rem 1.1rem;
          font-weight:700;font-size:1rem;cursor:pointer;transition:opacity .2s;}
     .btn.primary{background:linear-gradient(180deg,var(--blush),var(--blush-strong));
                  color:#2b2230;box-shadow:0 8px 20px rgba(242,201,225,.45);}
     .btn.secondary{background:#fff;border:1px solid #ead6e5;color:var(--charcoal);}
-    .btn:disabled{opacity:.6;cursor:not-allowed;}
     .count{text-align:center;width:100%;margin-top:.5rem;color:var(--muted);font-size:.95rem;}
 
-    .status{margin-top:1rem;padding:.75rem 1rem;border-radius:var(--radius-md);
-            background:#fff6fb;border:1px solid #f0d9e9;color:#49384a;display:none;text-align:center;}
-    .status.show{display:block;}
+    /* Background queue list */
+    .queue{margin-top:1rem;border-top:1px dashed #ead6e5;padding-top:1rem;}
+    .q-title{font-weight:700;margin-bottom:.5rem;font-size:1rem;}
+    .q-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+    .q-item{display:flex;gap:.6rem;align-items:center;border:1px solid var(--border);
+            border-radius:12px;padding:.5rem .6rem;background:#fff;}
+    .q-thumb{width:44px;height:44px;flex:0 0 44px;border-radius:10px;overflow:hidden;border:1px solid #eee;}
+    .q-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+    .q-meta{flex:1 1 auto;min-width:0;}
+    .q-name{font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .q-state{font-size:.8rem;color:var(--muted);}
+    .chip{display:inline-block;padding:.08rem .5rem;border-radius:999px;font-size:.75rem;font-weight:600;}
+    .chip.q{background:#f6f1f7;color:#6b5b6f;}
+    .chip.u{background:#f1f7f4;color:#3a7254;}
+    .chip.d{background:#edf7ef;color:var(--ok);}
+    .chip.f{background:#fdeeee;color:var(--err);}
 
-    .spinner{width:16px;height:16px;border-radius:999px;border:2px solid rgba(0,0,0,.15);
-             border-top-color:rgba(110,143,123,.9);display:inline-block;
-             animation:spin .8s linear infinite;vertical-align:middle;margin-left:6px;}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    .status{margin-top:1rem;padding:.6rem .9rem;border-radius:12px;background:#fff6fb;
+            border:1px solid #f0d9e9;color:#49384a;display:none;text-align:center;}
+    .status.show{display:block;}
 
     footer{text-align:center;color:var(--muted);margin-top:2rem;font-size:.9rem;}
   </style>
 </head>
 <body>
   <nav class="nav"><div class="nav-inner">
-    <a class="brand" href="https://quinn-wedding-oct2025.github.io/index.html" target="_blank">Brecken &amp; Johnathan</a>
+    <a class="brand" href="https://quinn-wedding-oct2025.github.io/index.html" target="_blank" rel="noopener">Brecken &amp; Johnathan</a>
   </div></nav>
 
   <main class="wrap">
@@ -89,126 +102,206 @@
       <p class="sub">Thank you for celebrating with us—please add your favorite moments below.</p>
     </header>
 
-    <section class="card">
-      <button class="pick" id="pickBtn">Choose Photos</button>
-      <input id="fileInput" type="file" accept="image/*" multiple>
-      <p class="limit-note"><strong>Limit:</strong> up to 20 photos per upload.</p>
+    <section class="card" aria-label="Upload wedding photos">
+      <button class="pick" id="pickBtn" type="button">Choose Photos</button>
+      <input id="fileInput" type="file" accept="image/*" multiple />
 
-      <div class="grid" id="thumbGrid"></div>
+      <p class="limit-note"><strong>Limit:</strong> up to 20 photos per submission. You can submit multiple times.</p>
+
+      <!-- Current selection preview (cleared after you press Upload) -->
+      <div class="grid" id="thumbGrid" aria-live="polite"></div>
 
       <div class="actions">
-        <button class="btn primary" id="uploadBtn" disabled>Upload</button>
-        <button class="btn secondary" id="clearBtn">Clear</button>
+        <button class="btn primary" id="uploadBtn" type="button">Upload</button>
+        <button class="btn secondary" id="clearBtn" type="button">Clear</button>
         <div class="count" id="countNote">0 / 20 selected</div>
       </div>
 
-      <div class="status" id="status"></div>
+      <!-- Background queue monitor (non-blocking, no bars) -->
+      <div class="queue" id="queueWrap" hidden>
+        <div class="q-title">Background uploads</div>
+        <div class="q-list" id="queueList"></div>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
     </section>
 
     <footer>With love, Brecken and Johnathan ✨</footer>
   </main>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxqAbBsdeVWqmhmuJyq4M2Qlsh3Ou8o5JepkDcwHLAQzcNNB41Bm15S2LRkrhO6xNE/exec";
-    const MAX_FILES = 20;
-    const pickBtn = document.getElementById('pickBtn');
+    // === Settings ===
+    const scriptURL   = "https://script.google.com/macros/s/AKfycbxqAbBsdeVWqmhmuJyq4M2Qlsh3Ou8o5JepkDcwHLAQzcNNB41Bm15S2LRkrhO6xNE/exec";
+    const MAX_FILES   = 20; // per submission
+    const CONCURRENCY = 4;  // simultaneous background uploads
+
+    // === Elements ===
+    const pickBtn   = document.getElementById('pickBtn');
     const fileInput = document.getElementById('fileInput');
     const thumbGrid = document.getElementById('thumbGrid');
     const uploadBtn = document.getElementById('uploadBtn');
-    const clearBtn = document.getElementById('clearBtn');
+    const clearBtn  = document.getElementById('clearBtn');
     const countNote = document.getElementById('countNote');
-    const statusEl = document.getElementById('status');
-    let fileList = [];
+    const statusEl  = document.getElementById('status');
+    const queueWrap = document.getElementById('queueWrap');
+    const queueList = document.getElementById('queueList');
 
-    pickBtn.addEventListener('click',()=>fileInput.click());
+    // === Working state ===
+    let selection = [];                 // current pick (cleared after "Upload")
+    let queue = [];                     // background tasks
+    let active = 0;                     // number of concurrent uploads in flight
+    let nextId = 1;                     // simple id generator
 
-    fileInput.addEventListener('change',e=>{
-      const chosen=[...e.target.files].filter(f=>f.type.startsWith('image/'));
-      appendFiles(chosen);
-      fileInput.value='';
+    // Open system picker
+    pickBtn.addEventListener('click', () => fileInput.click());
+
+    // Add to selection (not queue yet)
+    fileInput.addEventListener('change', (e) => {
+      const chosen = [...e.target.files].filter(f => f.type.startsWith('image/'));
+      appendToSelection(chosen);
+      fileInput.value = ''; // allow picking same files again if needed
     });
 
-    function appendFiles(files){
-      const remaining=MAX_FILES-fileList.length;
-      const accepted=files.slice(0,Math.max(0,remaining));
-      if(files.length>remaining) showStatus(`Only ${remaining} more can be added.`);
-      fileList=fileList.concat(accepted);
-      renderThumbs();
+    function appendToSelection(files){
+      const remaining = MAX_FILES - selection.length;
+      const accepted  = files.slice(0, Math.max(0, remaining));
+      if (files.length > remaining) showStatus(`Only ${remaining} more can be added to this submission.`);
+      selection = selection.concat(accepted);
+      renderSelection();
       updateCount();
     }
 
-    function renderThumbs(){
-      thumbGrid.innerHTML='';
-      fileList.forEach(f=>{
-        const src=URL.createObjectURL(f);
-        const div=document.createElement('div');
-        div.className='thumb';
-        div.innerHTML=`<img src="${src}" alt="">`;
+    function renderSelection(){
+      thumbGrid.innerHTML = '';
+      selection.forEach((file) => {
+        const src = URL.createObjectURL(file);
+        const div = document.createElement('div');
+        div.className = 'thumb';
+        div.innerHTML = `<img src="${src}" alt="">`;
         thumbGrid.appendChild(div);
       });
     }
 
     function updateCount(){
-      countNote.textContent=`${fileList.length} / ${MAX_FILES} selected`;
-      uploadBtn.disabled=fileList.length===0;
+      countNote.textContent = `${selection.length} / ${MAX_FILES} selected`;
     }
 
-    clearBtn.addEventListener('click',()=>{
-      fileList=[];thumbGrid.innerHTML='';updateCount();
+    clearBtn.addEventListener('click', ()=>{
+      selection = [];
+      renderSelection();
+      updateCount();
       showStatus('Selection cleared.');
     });
 
-    uploadBtn.addEventListener('click',async()=>{
-      if(!fileList.length)return;
-      disableUI(true);
-      showStatus('Uploading in background… <span class="spinner"></span>',true);
-      try{
-        const results=await uploadFiles(fileList);
-        const ok=results.filter(r=>r.ok).length;
-        const fail=results.length-ok;
-        showStatus(`Upload complete: ${ok} succeeded${fail?`, ${fail} failed`:''}.`);
-        fileList=[];thumbGrid.innerHTML='';updateCount();
-      }catch(e){
-        console.error(e);showStatus('Error uploading. Please try again.');
-      }finally{disableUI(false);}
+    // Enqueue current selection and immediately clear UI so user can pick more
+    uploadBtn.addEventListener('click', ()=>{
+      if (!selection.length){ showStatus('Please choose photos first.'); return; }
+
+      // Create tasks and push to queue
+      const tasks = selection.map(file => ({
+        id: nextId++,
+        file,
+        name: file.name,
+        url: URL.createObjectURL(file), // for tiny preview in queue
+        state: 'queued' // 'queued' | 'uploading' | 'done' | 'failed'
+      }));
+      queue.push(...tasks);
+      selection = [];
+      renderSelection();
+      updateCount();
+      showStatus(`Submitted ${tasks.length} photo${tasks.length>1?'s':''}. They’ll upload in the background.`);
+      renderQueue();
+
+      // Kick the workers
+      pumpQueue();
     });
 
-    function disableUI(d){
-      uploadBtn.disabled=d||fileList.length===0;
-      clearBtn.disabled=d;
-      pickBtn.disabled=d;
+    // === Queue worker: non-blocking, limited concurrency, no progress bars ===
+    async function pumpQueue(){
+      while (active < CONCURRENCY){
+        // find next queued task
+        const task = queue.find(t => t.state === 'queued');
+        if (!task) break;
+        startTask(task);
+      }
     }
 
-    function showStatus(html){
-      statusEl.innerHTML=html;
-      statusEl.classList.add('show');
+    function startTask(task){
+      task.state = 'uploading';
+      active++;
+      renderQueue();
+
+      uploadOne(task.file)
+        .then(ok => { task.state = ok ? 'done' : 'failed'; })
+        .catch(()=> { task.state = 'failed'; })
+        .finally(()=>{
+          active--;
+          renderQueue();
+          // keep workers going if more remain
+          pumpQueue();
+        });
     }
 
-    async function uploadFiles(files){
-      const uploads=files.map(async file=>{
-        try{
-          const base64=await toBase64(file);
-          const body=new URLSearchParams();
-          body.append("file",(base64.split(',')[1]||base64));
-          body.append("filename",file.name);
-          body.append("mimeType",file.type);
-          const res=await fetch(scriptURL,{method:"POST",body});
-          const text=await res.text();
-          return{ok:res.ok,text};
-        }catch(e){return{ok:false,text:String(e)};}
-      });
-      const settled=await Promise.allSettled(uploads);
-      return settled.map(s=>s.status==='fulfilled'?s.value:{ok:false,text:String(s.reason)});
+    // Single file upload (base64 → POST)
+    async function uploadOne(file){
+      try{
+        const base64 = await toBase64(file);
+        const body = new URLSearchParams();
+        body.append("file", (base64.split(',')[1] || base64));
+        body.append("filename", file.name);
+        body.append("mimeType", file.type);
+        const res = await fetch(scriptURL, { method: "POST", body });
+        // If your Apps Script returns a useful message, you could read it:
+        // const text = await res.text();
+        return res.ok;
+      }catch(e){
+        console.error(e);
+        return false;
+      }
     }
 
     function toBase64(file){
-      return new Promise((resolve,reject)=>{
-        const r=new FileReader();
-        r.onload=()=>resolve(r.result);
-        r.onerror=reject;
+      return new Promise((resolve, reject)=>{
+        const r = new FileReader();
+        r.onload  = () => resolve(r.result);
+        r.onerror = reject;
         r.readAsDataURL(file);
       });
     }
+
+    // Render queue (minimal badges, no bars)
+    function renderQueue(){
+      // hide the queue panel if nothing relevant
+      const visible = queue.some(t => t.state !== 'done') || queue.length > 0;
+      queueWrap.hidden = !visible;
+
+      // keep only a reasonable history (last 200 items)
+      if (queue.length > 200) queue = queue.slice(-200);
+
+      queueList.innerHTML = '';
+      queue.forEach(t => {
+        const item = document.createElement('div');
+        item.className = 'q-item';
+        const chipClass = t.state === 'queued' ? 'q' : t.state === 'uploading' ? 'u' : t.state === 'done' ? 'd' : 'f';
+        const chipText  = t.state === 'queued' ? 'Queued' : t.state === 'uploading' ? 'Uploading' : t.state === 'done' ? 'Done' : 'Failed';
+        item.innerHTML = `
+          <div class="q-thumb"><img src="${t.url}" alt=""></div>
+          <div class="q-meta">
+            <div class="q-name" title="${t.name}">${t.name}</div>
+            <div class="q-state"><span class="chip ${chipClass}">${chipText}</span></div>
+          </div>
+        `;
+        queueList.appendChild(item);
+      });
+    }
+
+    function showStatus(text){
+      statusEl.textContent = text;
+      statusEl.classList.add('show');
+    }
+
+    // Init
+    updateCount();
   </script>
 </body>
 </html>
