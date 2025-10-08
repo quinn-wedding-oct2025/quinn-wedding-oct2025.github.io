@@ -10,91 +10,77 @@
   <style>
     :root{
       --ivory:#FFFBF6; --paper:#FFFFFF; --charcoal:#2B2B2B; --muted:#6F6F6F;
-      --blush:#F2C9E1; --blush-strong:#E7B3D3; --sage:#6E8F7B; --ring:rgba(110,143,123,.25);
-      --border:#f2f2f2; --shadow:0 10px 30px rgba(0,0,0,.08);
-      --radius-xl:22px; --radius-lg:16px; --radius-md:12px;
+      --blush:#F2C9E1; --blush-strong:#E7B3D3; --sage:#6E8F7B; --border:#f2f2f2;
+      --shadow:0 10px 30px rgba(0,0,0,.08); --radius-xl:22px; --radius-md:12px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      margin:0; background:linear-gradient(180deg,var(--ivory),#fff);
-      color:var(--charcoal); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial;
-      line-height:1.6;
+      background:linear-gradient(180deg,var(--ivory),#fff);
+      font-family:Inter,system-ui,sans-serif; color:var(--charcoal); line-height:1.6;
+      min-height:100vh;
     }
 
-    /* Sticky nav */
-    .nav{ position:sticky; top:0; z-index:50; backdrop-filter:blur(8px);
-      background:rgba(255,255,255,.85); border-bottom:1px solid var(--border);}
-    .nav-inner{ max-width:1100px; margin:0 auto; padding:.75rem 1rem;
-      display:flex; align-items:center; justify-content:space-between;}
-    .brand{ font-family:"Playfair Display",Georgia,serif; font-weight:700; letter-spacing:.02em;
-      font-size:1.1rem; color:var(--charcoal); text-decoration:none;}
+    /* Navbar */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+         border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+    .nav-inner{max-width:1100px;margin:auto;padding:.75rem 1rem;
+               display:flex;align-items:center;justify-content:space-between;}
+    .brand{font-family:"Playfair Display",serif;font-weight:700;text-decoration:none;
+           color:var(--charcoal);font-size:1.1rem;}
 
-    .wrap{ max-width:720px; margin: 2.5rem auto 5rem; padding: 0 1rem; }
-    header{text-align:center; margin: 1.25rem 0 1.5rem;}
-    .eyebrow{ letter-spacing:.12em; text-transform:uppercase; color:var(--sage); font-weight:600; font-size:.85rem; }
-    h1{ font-family:"Playfair Display",Georgia,serif; font-weight:700; font-size:clamp(1.9rem,5.5vw,2.6rem); margin:.35rem 0 0; line-height:1.15; }
-    .sub{ color:var(--muted); margin-top:.35rem; font-size:1rem; }
+    /* Layout */
+    .wrap{max-width:720px;margin:2.5rem auto 5rem;padding:0 1rem;}
+    header{text-align:center;margin-bottom:1.5rem;}
+    .eyebrow{color:var(--sage);text-transform:uppercase;font-size:.85rem;font-weight:600;letter-spacing:.1em;}
+    h1{font-family:"Playfair Display",serif;font-size:2.2rem;margin:.4rem 0;}
+    .sub{color:var(--muted);font-size:1rem;}
 
-    .card{ background:var(--paper); border-radius:var(--radius-xl); box-shadow:var(--shadow);
-           padding:clamp(1rem,3.5vw,1.5rem); border:1px solid var(--border); }
+    .card{background:var(--paper);border:1px solid var(--border);
+          border-radius:var(--radius-xl);box-shadow:var(--shadow);
+          padding:1.5rem;}
 
-    .steps{ display:flex; gap:.75rem; align-items:center; justify-content:center; margin: .25rem 0 1rem; font-size:.95rem; color:var(--muted); }
-    .dot{ width:6px; height:6px; border-radius:999px; background:var(--sage); opacity:.5;}
+    /* Picker */
+    .pick{display:block;width:100%;margin-bottom:.75rem;
+          border:none;border-radius:999px;padding:1rem 1.25rem;
+          font-weight:700;font-size:1.05rem;cursor:pointer;
+          background:linear-gradient(180deg,var(--blush),var(--blush-strong));
+          color:#2b2230;box-shadow:0 8px 20px rgba(242,201,225,.45);}
+    .pick:active{transform:translateY(1px);}
+    #fileInput{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+    .limit-note{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:1rem;}
 
-    /* Big mobile-friendly picker button */
-    .pick{
-      display:block; width:100%;
-      border:none; border-radius:999px;
-      padding:1rem 1.25rem; font-weight:700; font-size:1.05rem; text-align:center;
-      background:linear-gradient(180deg,var(--blush),var(--blush-strong)); color:#2b2230;
-      box-shadow:0 8px 20px rgba(242,201,225,.45);
-      cursor:pointer;
-    }
-    .pick:active{ transform:translateY(1px); }
+    /* Thumbnails */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+          gap:10px;margin-bottom:1rem;}
+    .thumb{border-radius:var(--radius-md);overflow:hidden;border:1px solid #eee;}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 
-    .limit-note{ color:var(--muted); font-size:.95rem; margin:.75rem 0 0.25rem; text-align:center; }
+    /* Buttons */
+    .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+    .btn{flex:1 1 auto;min-width:120px;border:none;border-radius:999px;padding:.9rem 1.1rem;
+         font-weight:700;font-size:1rem;cursor:pointer;transition:opacity .2s;}
+    .btn.primary{background:linear-gradient(180deg,var(--blush),var(--blush-strong));
+                 color:#2b2230;box-shadow:0 8px 20px rgba(242,201,225,.45);}
+    .btn.secondary{background:#fff;border:1px solid #ead6e5;color:var(--charcoal);}
+    .btn:disabled{opacity:.6;cursor:not-allowed;}
+    .count{text-align:center;width:100%;margin-top:.5rem;color:var(--muted);font-size:.95rem;}
 
-    /* Visually hidden input, triggered by button */
-    #fileInput{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+    .status{margin-top:1rem;padding:.75rem 1rem;border-radius:var(--radius-md);
+            background:#fff6fb;border:1px solid #f0d9e9;color:#49384a;display:none;text-align:center;}
+    .status.show{display:block;}
 
-    /* Thumbnails (no progress bars) */
-    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
-           gap:10px; margin-top:1rem; }
-    .thumb{ position:relative; border-radius:var(--radius-md); overflow:hidden; border:1px solid #f0e9ef; background:#fff; aspect-ratio:1/1; display:grid; place-items:center; }
-    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .thumb::after{
-      content:""; position:absolute; inset:0; pointer-events:none; border-radius:var(--radius-md);
-      box-shadow:inset 0 0 0 2px rgba(110,143,123,.12);
-    }
+    .spinner{width:16px;height:16px;border-radius:999px;border:2px solid rgba(0,0,0,.15);
+             border-top-color:rgba(110,143,123,.9);display:inline-block;
+             animation:spin .8s linear infinite;vertical-align:middle;margin-left:6px;}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* Actions */
-    .actions{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:1rem; }
-    .btn{ flex:1 1 auto; min-width:140px; border:none; border-radius:999px; padding:.9rem 1.1rem;
-          font-weight:700; font-size:1rem; cursor:pointer; }
-    .btn.primary{ background:linear-gradient(180deg,var(--blush),var(--blush-strong)); color:#2b2230; box-shadow:0 8px 20px rgba(242,201,225,.45); }
-    .btn.secondary{ background:#fff; border:1px solid #ead6e5; color:var(--charcoal); }
-    .count{ flex: 0 0 100%; text-align:center; color:var(--muted); font-size:.95rem; }
-
-    .status{ margin-top:.75rem; padding:.75rem 1rem; border-radius:var(--radius-md);
-             background:#fff6fb; border:1px solid #f0d9e9; color:#49384a; display:none; }
-    .status.show{ display:block; }
-
-    /* Tiny spinner shown only while background uploading */
-    .spinner{
-      width:18px; height:18px; border-radius:999px;
-      border:2px solid rgba(0,0,0,.12); border-top-color:rgba(110,143,123,.9);
-      animation:spin 0.8s linear infinite; display:inline-block; vertical-align:middle; margin-left:8px;
-    }
-    @keyframes spin{ to { transform:rotate(360deg); } }
+    footer{text-align:center;color:var(--muted);margin-top:2rem;font-size:.9rem;}
   </style>
 </head>
 <body>
-  <nav class="nav" aria-label="Primary">
-    <div class="nav-inner">
-      <a class="brand" href="https://quinn-wedding-oct2025.github.io/index.html" target="_blank" rel="noopener noreferrer">Brecken &amp; Johnathan</a>
-    </div>
-  </nav>
+  <nav class="nav"><div class="nav-inner">
+    <a class="brand" href="https://quinn-wedding-oct2025.github.io/index.html" target="_blank">Brecken &amp; Johnathan</a>
+  </div></nav>
 
   <main class="wrap">
     <header>
@@ -103,8 +89,126 @@
       <p class="sub">Thank you for celebrating with us—please add your favorite moments below.</p>
     </header>
 
-    <section class="card" aria-label="Upload wedding photos">
-      <div class="steps"><span>1) Choose Photos</span><span class="dot"></span><span>2) Tap Upload</span></div>
+    <section class="card">
+      <button class="pick" id="pickBtn">Choose Photos</button>
+      <input id="fileInput" type="file" accept="image/*" multiple>
+      <p class="limit-note"><strong>Limit:</strong> up to 20 photos per upload.</p>
 
-      <!-- Big mobile-friendly picker button -->
-      <button class="pick" id="pickBtn" type
+      <div class="grid" id="thumbGrid"></div>
+
+      <div class="actions">
+        <button class="btn primary" id="uploadBtn" disabled>Upload</button>
+        <button class="btn secondary" id="clearBtn">Clear</button>
+        <div class="count" id="countNote">0 / 20 selected</div>
+      </div>
+
+      <div class="status" id="status"></div>
+    </section>
+
+    <footer>With love, Brecken and Johnathan ✨</footer>
+  </main>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxqAbBsdeVWqmhmuJyq4M2Qlsh3Ou8o5JepkDcwHLAQzcNNB41Bm15S2LRkrhO6xNE/exec";
+    const MAX_FILES = 20;
+    const pickBtn = document.getElementById('pickBtn');
+    const fileInput = document.getElementById('fileInput');
+    const thumbGrid = document.getElementById('thumbGrid');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const countNote = document.getElementById('countNote');
+    const statusEl = document.getElementById('status');
+    let fileList = [];
+
+    pickBtn.addEventListener('click',()=>fileInput.click());
+
+    fileInput.addEventListener('change',e=>{
+      const chosen=[...e.target.files].filter(f=>f.type.startsWith('image/'));
+      appendFiles(chosen);
+      fileInput.value='';
+    });
+
+    function appendFiles(files){
+      const remaining=MAX_FILES-fileList.length;
+      const accepted=files.slice(0,Math.max(0,remaining));
+      if(files.length>remaining) showStatus(`Only ${remaining} more can be added.`);
+      fileList=fileList.concat(accepted);
+      renderThumbs();
+      updateCount();
+    }
+
+    function renderThumbs(){
+      thumbGrid.innerHTML='';
+      fileList.forEach(f=>{
+        const src=URL.createObjectURL(f);
+        const div=document.createElement('div');
+        div.className='thumb';
+        div.innerHTML=`<img src="${src}" alt="">`;
+        thumbGrid.appendChild(div);
+      });
+    }
+
+    function updateCount(){
+      countNote.textContent=`${fileList.length} / ${MAX_FILES} selected`;
+      uploadBtn.disabled=fileList.length===0;
+    }
+
+    clearBtn.addEventListener('click',()=>{
+      fileList=[];thumbGrid.innerHTML='';updateCount();
+      showStatus('Selection cleared.');
+    });
+
+    uploadBtn.addEventListener('click',async()=>{
+      if(!fileList.length)return;
+      disableUI(true);
+      showStatus('Uploading in background… <span class="spinner"></span>',true);
+      try{
+        const results=await uploadFiles(fileList);
+        const ok=results.filter(r=>r.ok).length;
+        const fail=results.length-ok;
+        showStatus(`Upload complete: ${ok} succeeded${fail?`, ${fail} failed`:''}.`);
+        fileList=[];thumbGrid.innerHTML='';updateCount();
+      }catch(e){
+        console.error(e);showStatus('Error uploading. Please try again.');
+      }finally{disableUI(false);}
+    });
+
+    function disableUI(d){
+      uploadBtn.disabled=d||fileList.length===0;
+      clearBtn.disabled=d;
+      pickBtn.disabled=d;
+    }
+
+    function showStatus(html){
+      statusEl.innerHTML=html;
+      statusEl.classList.add('show');
+    }
+
+    async function uploadFiles(files){
+      const uploads=files.map(async file=>{
+        try{
+          const base64=await toBase64(file);
+          const body=new URLSearchParams();
+          body.append("file",(base64.split(',')[1]||base64));
+          body.append("filename",file.name);
+          body.append("mimeType",file.type);
+          const res=await fetch(scriptURL,{method:"POST",body});
+          const text=await res.text();
+          return{ok:res.ok,text};
+        }catch(e){return{ok:false,text:String(e)};}
+      });
+      const settled=await Promise.allSettled(uploads);
+      return settled.map(s=>s.status==='fulfilled'?s.value:{ok:false,text:String(s.reason)});
+    }
+
+    function toBase64(file){
+      return new Promise((resolve,reject)=>{
+        const r=new FileReader();
+        r.onload=()=>resolve(r.result);
+        r.onerror=reject;
+        r.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>
