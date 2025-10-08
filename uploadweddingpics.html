@@ -22,14 +22,13 @@
       line-height:1.6;
     }
 
-    /* Simple, sticky nav (optional) */
+    /* Sticky nav */
     .nav{ position:sticky; top:0; z-index:50; backdrop-filter:blur(8px);
       background:rgba(255,255,255,.85); border-bottom:1px solid var(--border);}
     .nav-inner{ max-width:1100px; margin:0 auto; padding:.75rem 1rem;
       display:flex; align-items:center; justify-content:space-between;}
     .brand{ font-family:"Playfair Display",Georgia,serif; font-weight:700; letter-spacing:.02em;
       font-size:1.1rem; color:var(--charcoal); text-decoration:none;}
-    .menu{ display:none; gap:1rem; } /* hide on mobile for simplicity */
 
     .wrap{ max-width:720px; margin: 2.5rem auto 5rem; padding: 0 1rem; }
     header{text-align:center; margin: 1.25rem 0 1.5rem;}
@@ -40,32 +39,34 @@
     .card{ background:var(--paper); border-radius:var(--radius-xl); box-shadow:var(--shadow);
            padding:clamp(1rem,3.5vw,1.5rem); border:1px solid var(--border); }
 
-    /* Step text */
     .steps{ display:flex; gap:.75rem; align-items:center; justify-content:center; margin: .25rem 0 1rem; font-size:.95rem; color:var(--muted); }
     .dot{ width:6px; height:6px; border-radius:999px; background:var(--sage); opacity:.5;}
 
-    /* Big button that opens the picker */
+    /* Big mobile-friendly picker button */
     .pick{
       display:block; width:100%;
       border:none; border-radius:999px;
       padding:1rem 1.25rem; font-weight:700; font-size:1.05rem; text-align:center;
       background:linear-gradient(180deg,var(--blush),var(--blush-strong)); color:#2b2230;
       box-shadow:0 8px 20px rgba(242,201,225,.45);
+      cursor:pointer;
     }
     .pick:active{ transform:translateY(1px); }
 
     .limit-note{ color:var(--muted); font-size:.95rem; margin:.75rem 0 0.25rem; text-align:center; }
 
-    /* Hidden input but triggered by the big button */
+    /* Visually hidden input, triggered by button */
     #fileInput{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
-    /* Thumbnails */
+    /* Thumbnails (no progress bars) */
     .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
            gap:10px; margin-top:1rem; }
     .thumb{ position:relative; border-radius:var(--radius-md); overflow:hidden; border:1px solid #f0e9ef; background:#fff; aspect-ratio:1/1; display:grid; place-items:center; }
     .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .progress{ position:absolute; left:6px; right:6px; bottom:6px; height:6px; border-radius:999px; background:#f4e7ef; overflow:hidden; }
-    .progress > span{ display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--blush),var(--blush-strong)); transition:width .25s ease; }
+    .thumb::after{
+      content:""; position:absolute; inset:0; pointer-events:none; border-radius:var(--radius-md);
+      box-shadow:inset 0 0 0 2px rgba(110,143,123,.12);
+    }
 
     /* Actions */
     .actions{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:1rem; }
@@ -73,21 +74,25 @@
           font-weight:700; font-size:1rem; cursor:pointer; }
     .btn.primary{ background:linear-gradient(180deg,var(--blush),var(--blush-strong)); color:#2b2230; box-shadow:0 8px 20px rgba(242,201,225,.45); }
     .btn.secondary{ background:#fff; border:1px solid #ead6e5; color:var(--charcoal); }
-
     .count{ flex: 0 0 100%; text-align:center; color:var(--muted); font-size:.95rem; }
 
     .status{ margin-top:.75rem; padding:.75rem 1rem; border-radius:var(--radius-md);
              background:#fff6fb; border:1px solid #f0d9e9; color:#49384a; display:none; }
     .status.show{ display:block; }
 
-    footer{ text-align:center; color:var(--muted); margin-top:1.5rem; font-size:.9rem; }
+    /* Tiny spinner shown only while background uploading */
+    .spinner{
+      width:18px; height:18px; border-radius:999px;
+      border:2px solid rgba(0,0,0,.12); border-top-color:rgba(110,143,123,.9);
+      animation:spin 0.8s linear infinite; display:inline-block; vertical-align:middle; margin-left:8px;
+    }
+    @keyframes spin{ to { transform:rotate(360deg); } }
   </style>
 </head>
 <body>
   <nav class="nav" aria-label="Primary">
     <div class="nav-inner">
-      <a class="brand" href="https://quinn-wedding-oct2025.github.io/index.html" target="_blank">Brecken &amp; Johnathan</a>
-      <!-- keep nav simple on phones; add links back later if needed -->
+      <a class="brand" href="https://quinn-wedding-oct2025.github.io/index.html" target="_blank" rel="noopener noreferrer">Brecken &amp; Johnathan</a>
     </div>
   </nav>
 
@@ -102,167 +107,4 @@
       <div class="steps"><span>1) Choose Photos</span><span class="dot"></span><span>2) Tap Upload</span></div>
 
       <!-- Big mobile-friendly picker button -->
-      <button class="pick" id="pickBtn" type="button">Choose Photos</button>
-      <!-- The actual input; capture may open the camera on many phones -->
-      <input id="fileInput" type="file" accept="image/*" multiple />
-
-      <p class="limit-note"><strong>Limit:</strong> up to 20 photos per upload.</p>
-
-      <!-- Thumbnails -->
-      <div class="grid" id="thumbGrid" aria-live="polite"></div>
-
-      <!-- Actions -->
-      <div class="actions">
-        <button class="btn primary" id="uploadBtn" type="button" disabled>Upload</button>
-        <button class="btn secondary" id="clearBtn" type="button">Clear</button>
-        <div class="count" id="countNote">0 / 20 selected</div>
-      </div>
-
-      <!-- Status -->
-      <div class="status" id="status" role="status" aria-live="polite"></div>
-    </section>
-
-    <footer>With love, Brecken and Johnathan ✨</footer>
-  </main>
-
-  <script>
-    // === Settings ===
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxqAbBsdeVWqmhmuJyq4M2Qlsh3Ou8o5JepkDcwHLAQzcNNB41Bm15S2LRkrhO6xNE/exec";
-    const MAX_FILES = 20;
-
-    // === Elements ===
-    const pickBtn   = document.getElementById('pickBtn');
-    const fileInput = document.getElementById('fileInput');
-    const thumbGrid = document.getElementById('thumbGrid');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const clearBtn  = document.getElementById('clearBtn');
-    const countNote = document.getElementById('countNote');
-    const statusEl  = document.getElementById('status');
-
-    let fileList = [];
-
-    // Open system picker on tap
-    pickBtn.addEventListener('click', () => fileInput.click());
-
-    // Handle chosen files
-    fileInput.addEventListener('change', (e) => {
-      const chosen = [...e.target.files].filter(f => f.type.startsWith('image/'));
-      appendFiles(chosen);
-      // reset input so users can open picker again and add more
-      fileInput.value = '';
-    });
-
-    function appendFiles(files){
-      if(!files.length) return;
-      const remaining = MAX_FILES - fileList.length;
-      const accepted = files.slice(0, Math.max(0, remaining));
-      if (files.length > remaining) {
-        showStatus(`You can upload a maximum of ${MAX_FILES} photos at a time. Added ${accepted.length}.`);
-      } else {
-        showStatus(`Added ${accepted.length} photo${accepted.length>1?'s':''}.`);
-      }
-      fileList = fileList.concat(accepted);
-      renderThumbs();
-      updateCount();
-    }
-
-    function renderThumbs(){
-      thumbGrid.innerHTML = '';
-      fileList.forEach((file, idx) => {
-        const src = URL.createObjectURL(file);
-        const div = document.createElement('div');
-        div.className = 'thumb';
-        div.innerHTML = `
-          <img src="${src}" alt="Selected photo ${idx+1}">
-          <div class="progress"><span></span></div>
-        `;
-        thumbGrid.appendChild(div);
-      });
-    }
-
-    function updateCount(){
-      countNote.textContent = `${fileList.length} / ${MAX_FILES} selected`;
-      uploadBtn.disabled = fileList.length === 0;
-      uploadBtn.style.opacity = fileList.length === 0 ? .6 : 1;
-    }
-
-    clearBtn.addEventListener('click', ()=>{
-      fileList = [];
-      thumbGrid.innerHTML = '';
-      updateCount();
-      showStatus('Selection cleared.');
-    });
-
-    uploadBtn.addEventListener('click', async ()=>{
-      if(!fileList.length){ showStatus('Please choose photos first.'); return; }
-      disableUI(true);
-      try{
-        const results = await uploadFiles(fileList);
-        const ok = results.filter(r => r.ok).length;
-        const fail = results.length - ok;
-        showStatus(`Upload complete: ${ok} succeeded${fail?`, ${fail} failed`:''}.`);
-      }catch(err){
-        console.error(err);
-        showStatus('Something went wrong while uploading. Please try again.');
-      }finally{
-        disableUI(false);
-      }
-    });
-
-    function disableUI(disabled){
-      uploadBtn.disabled = disabled || fileList.length === 0;
-      clearBtn.disabled  = disabled;
-      pickBtn.disabled   = disabled;
-      uploadBtn.style.opacity = (disabled || fileList.length===0) ? .6 : 1;
-      pickBtn.style.opacity   = disabled ? .6 : 1;
-    }
-
-    function showStatus(text){
-      statusEl.textContent = text;
-      statusEl.classList.add('show');
-    }
-
-    // Upload files sequentially (shows progress bar for each)
-    async function uploadFiles(files){
-      const items = [...thumbGrid.querySelectorAll('.thumb')];
-      const out = [];
-      for (let i = 0; i < files.length; i++){
-        const file = files[i];
-        const bar  = items[i]?.querySelector('.progress > span');
-        try{
-          const base64 = await toBase64(file);
-          animate(bar, 35);
-          const body = new URLSearchParams();
-          body.append("file", (base64.split(',')[1] || base64));
-          body.append("filename", file.name);
-          body.append("mimeType", file.type);
-
-          const res = await fetch(scriptURL, { method: "POST", body });
-          animate(bar, 100);
-          const text = await res.text();
-          out.push({ ok: res.ok, text });
-        }catch(e){
-          console.error(e);
-          animate(bar, 100);
-          out.push({ ok:false, text: String(e) });
-        }
-      }
-      return out;
-    }
-
-    function toBase64(file){
-      return new Promise((resolve, reject)=>{
-        const r = new FileReader();
-        r.onload = () => resolve(r.result);
-        r.onerror = reject;
-        r.readAsDataURL(file);
-      });
-    }
-
-    function animate(el, to){ if(el) requestAnimationFrame(()=> el.style.width = to + '%'); }
-
-    // Init
-    updateCount();
-  </script>
-</body>
-</html>
+      <button class="pick" id="pickBtn" type
