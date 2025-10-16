@@ -22,7 +22,6 @@
       min-height:100vh;
     }
 
-    /* Navbar */
     .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
          border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
     .nav-inner{max-width:1100px;margin:auto;padding:.75rem 1rem;
@@ -30,7 +29,6 @@
     .brand{font-family:"Playfair Display",serif;font-weight:700;text-decoration:none;
            color:var(--charcoal);font-size:1.1rem;}
 
-    /* Layout */
     .wrap{max-width:820px;margin:2.2rem auto 4rem;padding:0 1rem;}
     header{text-align:center;margin-bottom:1.25rem;}
     .eyebrow{color:var(--sage);text-transform:uppercase;font-size:.85rem;font-weight:600;letter-spacing:.1em;}
@@ -41,7 +39,6 @@
           border-radius:var(--radius-xl);box-shadow:var(--shadow);
           padding:1.25rem;}
 
-    /* Picker */
     .pick{display:block;width:100%;margin-bottom:.75rem;
           border:none;border-radius:999px;padding:1rem 1.25rem;
           font-weight:700;font-size:1.05rem;cursor:pointer;
@@ -99,7 +96,7 @@
     <header>
       <div class="eyebrow">Brecken &amp; Johnathan</div>
       <h1>Share Your Photos</h1>
-      <p class="sub">Thank you for celebrating with us—please add your favorite moments below.</p>
+      <p class="sub">Thank you for celebrating with us! Please add your favorite moments below.</p>
     </header>
 
     <section class="card" aria-label="Upload wedding photos">
@@ -108,7 +105,6 @@
 
       <p class="limit-note"><strong>Limit:</strong> up to 20 photos per submission. You can submit multiple times.</p>
 
-      <!-- Current selection preview (cleared after you press Upload) -->
       <div class="grid" id="thumbGrid" aria-live="polite"></div>
 
       <div class="actions">
